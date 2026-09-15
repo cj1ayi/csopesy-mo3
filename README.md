@@ -1,6 +1,6 @@
 Group Members:
 - Billones, Francis
-- Nacasabong, Joshua
+- Nacasabog, Joshua
 - Santiago, Juan Ramon
 - Tan, Roberta
 
