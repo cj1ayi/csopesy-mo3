@@ -1,8 +1,8 @@
 Group Members:
-Billones, Francis
-Nacasabong, Joshua
-Santiago, Juan Ramon
-Tan, Roberta
+- Billones, Francis
+- Nacasabong, Joshua
+- Santiago, Juan Ramon
+- Tan, Roberta
 
 Instructions to Run:
 1. Navigate to the SOURCE folder.
