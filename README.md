@@ -1,10 +1,12 @@
 Group Members:
-Billones, Francis 
+Billones, Francis
 Nacasabong, Joshua
 Santiago, Juan Ramon
-Tan, Roberta 
+Tan, Roberta
 
 Instructions to Run:
-[e.g. Compile with g++ *.cpp -o csopesy_mo, then run ./csopesy_mo]
+1. Navigate to the SOURCE folder.
+2. Compile: g++ *.cpp -o csopesy_mo3
+3. Run: ./csopesy_mo3
 
-Entry File: main.cpp (contains main function)
+Entry File: main.cpp (contains the main function)
