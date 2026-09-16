@@ -9,10 +9,10 @@ int main() {
         std::cout << ">";
         getline(std::cin, command);
 
-        command = toLower(command);
+        command = to_lower(command);
 
         if (command == "help") {
-            printHelp();
+            print_help();
         } else if (command == "start_marquee") {
             // TODO
             std::cout << "TODO: start_marquee\n";

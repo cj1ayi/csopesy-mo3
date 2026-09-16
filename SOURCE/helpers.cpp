@@ -6,7 +6,7 @@
 /**
  * Prints the list of available commands.
  */
-void printHelp() {
+void print_help() {
     std::cout << "Available commands:\n"
               << "  help          - show list of available commands\n"
               << "  start_marquee - start the animation\n"
@@ -19,7 +19,7 @@ void printHelp() {
 /**
  * Converts a string to lowercase
  */
-std::string toLower(std::string s) {
+std::string to_lower(std::string s) {
     std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) {
         return std::tolower(c);
     });

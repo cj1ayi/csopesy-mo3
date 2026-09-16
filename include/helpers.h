@@ -3,7 +3,7 @@
 
 #include <string>
 
-void printHelp();
-std::string toLower(std::string);
+void print_help();
+std::string to_lower(std::string);
 
 #endif
