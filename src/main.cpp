@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "helpers.h"
+#include "../include/helpers.h"
 
 int main() {
     std::string command;
