@@ -7,6 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories(include)
 
 add_executable(csopesy_mo3
-    SOURCE/main.cpp
-    SOURCE/helpers.cpp
+    src/main.cpp
+    src/helpers.cpp
 )
