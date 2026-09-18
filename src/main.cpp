@@ -55,6 +55,7 @@ int main() {
             // TODO
             std::cout << "TODO: set_speed\n";
         } else if (command == "exit") {
+            std::cout << "Terminating console..." << std::endl;
             break;
         } else {
             std::cout << "Unknown command. Type HELP to view the list of available commands.\n";
