@@ -7,7 +7,7 @@ int main() {
     const std::string version_date = "2026-09-18";
     const std::vector<std::string> group_members = {
         "Billones, Francis",
-        "Nacasabog, Joshua N.",
+        "Nacasabog, Joshua",
         "Santiago, Juan Ramon",
         "Tan, Roberta",
     };
