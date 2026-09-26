@@ -13,7 +13,7 @@ void print_help() {
                             "  stop_marquee  - stop the animation\n"
                             "  set_text      - set marquee text\n"
                             "  set_speed     - set refresh speed (ms)\n"
-                            "  exit          - quit the program\n";
+                            "  exit          - quit the program\n\n";
     std::cout << help_text;
 }
 

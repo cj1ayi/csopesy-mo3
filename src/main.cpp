@@ -14,6 +14,7 @@ int main() {
 
     std::string input;
     std::string marquee_text;
+    double animation_speed = 10; // default 10ms
 
     std::cout << "Welcome to CSOPESY!\n\n";
 
@@ -38,6 +39,14 @@ int main() {
         input = to_lower(input);
         std::vector<std::string> extracted_input = parse_command(input);
         std::string command = extracted_input[0];
+
+        // argument count error checking
+        if (command == "help" || command == "start_marquee" || command == "stop_marquee") {
+            if (extracted_input.size() > 1) {
+                std::cout << "Command '" << command << "' does not accept any arguments. Usage: " << command << "\n\n";
+                continue;
+            }
+        }
 
         if (command == "help") {
             print_help();
