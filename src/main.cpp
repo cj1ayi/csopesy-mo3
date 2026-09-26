@@ -77,7 +77,7 @@ int main() {
             std::cout << "Terminating console..." << std::endl;
             break;
         } else {
-            std::cout << "Unknown command. Type HELP to view the list of available commands.\n";
+            std::cout << "Unknown command. Type 'help' to view the list of available commands.\n";
         }
     }
 

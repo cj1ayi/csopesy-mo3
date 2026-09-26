@@ -9,12 +9,12 @@
  */
 void print_help() {
     std::string help_text = "Available commands:\n"
-                            "  help          - show list of available commands\n"
-                            "  start_marquee - start the animation\n"
-                            "  stop_marquee  - stop the animation\n"
-                            "  set_text      - set marquee text\n"
-                            "  set_speed     - set refresh speed (ms)\n"
-                            "  exit          - quit the program\n\n";
+                            "  help             - show list of available commands\n"
+                            "  start_marquee    - start the animation\n"
+                            "  stop_marquee     - stop the animation\n"
+                            "  set_text <text>  - set marquee text (Example: set_text Hello World!)\n"
+                            "  set_speed <ms>   - set refresh speed in ms (Example: set_speed 10) \n"
+                            "  exit             - quit the program\n\n";
     std::cout << help_text;
 }
 
