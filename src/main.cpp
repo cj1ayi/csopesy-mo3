@@ -64,8 +64,15 @@ int main() {
             }
             std::cout << "Text saved for marquee: " << marquee_text << "\n";
         } else if (command == "set_speed") {
-            // TODO
-            std::cout << "TODO: set_speed\n";
+            if (parse_to_double(extracted_input[1], animation_speed)) {
+                std::cout << "Animation speed set: " << animation_speed << "ms\n";
+                // TODO
+                std::cout << "TODO: set_speed\n\n";
+            } else {
+                std::cout << "Invalid argument for 'set_speed.' Usage: set_speed <ms> (Example: set_speed 10)\n\n";
+            }
+
+            
         } else if (command == "exit") {
             std::cout << "Terminating console..." << std::endl;
             break;

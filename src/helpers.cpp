@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <stdexcept>
 
 /**
  * Prints the list of available commands.
@@ -50,4 +51,24 @@ std::vector<std::string> parse_command(std::string &input) {
     result.push_back(unparsed_arguments);
 
     return result;
+}
+
+bool parse_to_double(std::string &input, double &result) {
+    try {
+        size_t processed_chars = 0;
+
+        //convert to double
+        double value = std::stod(input, &processed_chars);
+
+        if (processed_chars != input.length()) {
+            return false;
+        }
+
+        result = value;
+        return true;
+    } catch (...) {
+        return false;
+    }
+
+    return false;
 }
