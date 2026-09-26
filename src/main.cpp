@@ -30,7 +30,10 @@ int main() {
     // main loop
     while (true) {
         std::cout << "Command>";
-        getline(std::cin, input);
+        if (!getline(std::cin, input)) {
+            std::cout << "\nEOF reached or input stream failed. Terminating console..." << std::endl;
+            break;
+        }
 
         input = to_lower(input);
         std::vector<std::string> extracted_input = parse_command(input);
