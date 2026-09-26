@@ -53,13 +53,17 @@ std::vector<std::string> parse_command(std::string &input) {
     return result;
 }
 
+/**
+ * Converts a string into a double if possible.
+ */
 bool parse_to_double(std::string &input, double &result) {
     try {
         size_t processed_chars = 0;
 
-        //convert to double
+        // convert to double
         double value = std::stod(input, &processed_chars);
 
+        // check if all characters were parsed
         if (processed_chars != input.length()) {
             return false;
         }
