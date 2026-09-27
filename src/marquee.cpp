@@ -1,5 +1,7 @@
 #include "marquee.h"
 
+#include <algorithm>
+
 /**
  * Rotates a string one position to the left: the first character
  * is moved to the end.
@@ -19,15 +21,16 @@ std::string rotate_left(const std::string &s) {
  */
 std::string make_ring(const std::string &text) {
     std::string spaces(marquee_gap, ' ');
-    std::string ring = text + spaces; 
-    return "";
+    std::string ring = text + spaces;
+
+    ring.resize(std::max(ring.size(), marquee_width), ' ');
+    return ring;
 }
 
 /**
- * Returns the marquee_width characters of the ring that should be
- * shown on screen right now.
+ * Returns the first marquee_width characters of the ring: the part
+ * of the marquee that is visible on screen.
  */
 std::string current_frame(const std::string &ring) {
-    // TODO 
-    return "";
+    return ring.substr(0, marquee_width);
 }
