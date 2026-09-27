@@ -16,7 +16,7 @@ static bool exit_program(const std::string &) {
 }
 
 int main() {
-    const std::string version_date = "2026-09-18";
+    const std::string version_date = "2026-09-27";
     const std::vector<std::string> group_members = {
         "Billones, Francis",
         "Nacasabog, Joshua",
