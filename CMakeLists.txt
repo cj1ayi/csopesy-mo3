@@ -10,4 +10,5 @@ add_executable(csopesy_mo3
     src/main.cpp
     src/helpers.cpp
     src/marquee.cpp
+    src/commands.cpp
 )

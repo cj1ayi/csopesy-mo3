@@ -2,8 +2,19 @@
 #include <iostream>
 #include <vector>
 
+#include "commands.h"
 #include "helpers.h"
 #include "marquee.h"
+
+static bool help(const std::string &) {
+    print_help();
+    return true;
+}
+
+static bool exit_program(const std::string &) {
+    std::cout << "Terminating console..." << std::endl;
+    return false;
+}
 
 int main() {
     const std::string version_date = "2026-09-18";
@@ -15,6 +26,13 @@ int main() {
     };
 
     std::string input;
+
+    register_command({"help", false, help});
+    register_command({"start_marquee", false, start_marquee});
+    register_command({"stop_marquee", false, stop_marquee});
+    register_command({"set_text", true, set_text});
+    register_command({"set_speed", true, set_speed});
+    register_command({"exit", true, exit_program});
 
     std::system("cls");
     std::cout << "Welcome to CSOPESY!\n\n";
@@ -39,33 +57,8 @@ int main() {
             break;
         }
 
-        std::vector<std::string> extracted_input = parse_command(input);
-        std::string command = to_lower(extracted_input[0]);
-        std::string args = extracted_input.size() > 1 ? extracted_input[1] : "";
-
-        // argument count error checking
-        if (command == "help" || command == "start_marquee" || command == "stop_marquee") {
-            if (extracted_input.size() > 1) {
-                std::cout << "Command '" << command << "' does not accept any arguments. Usage: " << command << "\n\n";
-                continue;
-            }
-        }
-
-        if (command == "help") {
-            print_help();
-        } else if (command == "start_marquee") {
-            start_marquee(args);
-        } else if (command == "stop_marquee") {
-            stop_marquee(args);
-        } else if (command == "set_text") {
-            set_text(args);
-        } else if (command == "set_speed") {
-            set_speed(args);
-        } else if (command == "exit") {
-            std::cout << "Terminating console..." << std::endl;
+        if (!run_command(input)) {
             break;
-        } else {
-            std::cout << "Unknown command. Type 'help' to view the list of available commands.\n";
         }
     }
 
