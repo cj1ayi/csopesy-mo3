@@ -1,13 +1,15 @@
+#include <cstdlib>
 #include <iostream>
 #include <vector>
 
 #include "helpers.h"
+#include "marquee.h"
 
 int main() {
     const std::string version_date = "2026-09-18";
     const std::vector<std::string> group_members = {
         "Billones, Francis",
-        "Nacasabog, Joshua N.",
+        "Nacasabog, Joshua",
         "Santiago, Juan Ramon",
         "Tan, Roberta",
     };
@@ -16,7 +18,10 @@ int main() {
     std::string marquee_text;
     double animation_speed = 10; // default 10ms
 
+    std::system("cls");
     std::cout << "Welcome to CSOPESY!\n\n";
+    reserve_marquee_line();
+    std::cout << '\n';
 
     // group members
     std::cout << "Group Developer:\n";
@@ -32,13 +37,14 @@ int main() {
     while (true) {
         std::cout << "Command>";
         if (!getline(std::cin, input)) {
-            std::cout << "\nEOF reached or input stream failed. Terminating console..." << std::endl;
+            std::cout << "\nEOF reached or input stream failed. Terminating console..."
+                      << std::endl;
+            stop_marquee();
             break;
         }
 
-        input = to_lower(input);
         std::vector<std::string> extracted_input = parse_command(input);
-        std::string command = extracted_input[0];
+        std::string command = to_lower(extracted_input[0]);
 
         // argument count error checking
         if (command == "help" || command == "start_marquee" || command == "stop_marquee") {
@@ -51,29 +57,35 @@ int main() {
         if (command == "help") {
             print_help();
         } else if (command == "start_marquee") {
-            // TODO
-            std::cout << "TODO: start_marquee\n";
+            if (start_marquee()) {
+                std::cout << "Marquee started.\n";
+            } else {
+                std::cout << "Marquee is already running.\n";
+            }
         } else if (command == "stop_marquee") {
-            // TODO
-            std::cout << "TODO: stop_marquee\n";
+            if (stop_marquee()) {
+                std::cout << "Marquee stopped.\n";
+            } else {
+                std::cout << "Marquee is not running.\n";
+            }
         } else if (command == "set_text") {
             if (extracted_input.size() < 2) {
                 marquee_text = "";
             } else {
                 marquee_text = extracted_input[1];
             }
+            set_marquee_text(marquee_text);
             std::cout << "Text saved for marquee: " << marquee_text << "\n";
         } else if (command == "set_speed") {
-            if (parse_to_double(extracted_input[1], animation_speed)) {
-                std::cout << "Animation speed set: " << animation_speed << "ms\n";
-                // TODO
-                std::cout << "TODO: set_speed\n\n";
+            if (extracted_input.size() > 1 && parse_to_double(extracted_input[1], animation_speed) &&
+                animation_speed >= 1) {
+                set_marquee_speed(static_cast<int>(animation_speed));
+                std::cout << "Animation speed set: " << animation_speed << "ms\n\n";
             } else {
                 std::cout << "Invalid argument for 'set_speed.' Usage: set_speed <ms> (Example: set_speed 10)\n\n";
             }
-
-            
         } else if (command == "exit") {
+            stop_marquee();
             std::cout << "Terminating console..." << std::endl;
             break;
         } else {
