@@ -324,7 +324,7 @@ bool set_text(const std::string &args) {
 bool set_speed(const std::string &args) {
     std::string value = args;
     double ms;
-    if (parse_to_double(value, ms) && ms >= 1) {
+    if (parse_to_double(value, ms) && ms > 0) {
         speed_ms = ms;
         std::cout << "Animation speed set: " << ms << "ms\n\n";
     } else {
