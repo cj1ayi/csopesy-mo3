@@ -1,5 +1,6 @@
 #include "commands.h"
 
+#include <iomanip>
 #include <iostream>
 #include <vector>
 
@@ -36,4 +37,16 @@ bool run_command(std::string &input) {
 
     std::cout << "Unknown command. Type 'help' to view the list of available commands.\n";
     return true;
+}
+
+/**
+ * Prints the usage and description of every registered command.
+ */
+void print_commands() {
+    std::cout << "Available commands:\n";
+    for (const Command &cmd : commands) {
+        std::cout << "  " << std::left << std::setw(17) << cmd.usage << "- " << cmd.description
+                  << "\n";
+    }
+    std::cout << "\n";
 }

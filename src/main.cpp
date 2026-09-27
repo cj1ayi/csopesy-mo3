@@ -3,11 +3,10 @@
 #include <vector>
 
 #include "commands.h"
-#include "helpers.h"
 #include "marquee.h"
 
 static bool help(const std::string &) {
-    print_help();
+    print_commands();
     return true;
 }
 
@@ -27,12 +26,14 @@ int main() {
 
     std::string input;
 
-    register_command({"help", false, help});
-    register_command({"start_marquee", false, start_marquee});
-    register_command({"stop_marquee", false, stop_marquee});
-    register_command({"set_text", true, set_text});
-    register_command({"set_speed", true, set_speed});
-    register_command({"exit", true, exit_program});
+    register_command({"help", "help", "show list of available commands", false, help});
+    register_command({"start_marquee", "start_marquee", "start the animation", false, start_marquee});
+    register_command({"stop_marquee", "stop_marquee", "stop the animation", false, stop_marquee});
+    register_command({"set_text", "set_text <text>",
+                      "set marquee text (Example: set_text Hello World!)", true, set_text});
+    register_command({"set_speed", "set_speed <ms>",
+                      "set refresh speed in ms (Example: set_speed 10)", true, set_speed});
+    register_command({"exit", "exit", "quit the program", true, exit_program});
 
     std::system("cls");
     std::cout << "Welcome to CSOPESY!\n\n";
