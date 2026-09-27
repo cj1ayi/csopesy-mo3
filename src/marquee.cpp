@@ -4,9 +4,11 @@
 
 #include <atomic>
 #include <chrono>
+#include <iostream>
 #include <mutex>
 #include <thread>
 
+static SHORT marquee_row = 0;
 static std::thread worker;
 static std::atomic<bool> running{false};
 static std::atomic<int> speed_ms{100};
@@ -47,19 +49,29 @@ std::string current_frame(const std::string &ring, std::size_t width) {
 }
 
 /**
- * Draws the marquee on the top visible console row until stopped.
+ * Reserves the current console line for the marquee.
+ */
+void reserve_marquee_line() {
+    std::cout.flush();
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    marquee_row = csbi.dwCursorPosition.Y;
+    std::cout << '\n';
+}
+
+/**
+ * Draws the marquee on the reserved line until stopped.
  */
 static void run_marquee() {
     HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
     std::string ring, last_text;
     std::size_t last_width = 0;
-    COORD pos = {0, 0};
+    COORD pos = {0, marquee_row};
 
     while (running) {
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         GetConsoleScreenBufferInfo(out, &csbi);
         std::size_t width = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-        pos = {csbi.srWindow.Left, csbi.srWindow.Top};
 
         {
             std::lock_guard<std::mutex> lock(text_mutex);

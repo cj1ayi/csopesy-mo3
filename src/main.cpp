@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <iostream>
 #include <vector>
 
@@ -16,7 +17,10 @@ int main() {
     std::string input;
     std::string marquee_text;
 
+    std::system("cls");
     std::cout << "Welcome to CSOPESY!\n\n";
+    reserve_marquee_line();
+    std::cout << '\n';
 
     // group members
     std::cout << "Group Developer:\n";
