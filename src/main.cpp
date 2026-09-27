@@ -15,6 +15,14 @@ static bool exit_program(const std::string &) {
     return false;
 }
 
+static void clear_screen() {
+#ifdef _WIN32
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
+}
+
 int main() {
     const std::string version_date = "2026-09-27";
     const std::vector<std::string> group_members = {
@@ -35,7 +43,7 @@ int main() {
                       "set refresh speed in ms (Example: set_speed 10)", true, set_speed});
     register_command({"exit", "exit", "quit the program", false, exit_program});
 
-    std::system("cls");
+    clear_screen();
     std::cout << "Welcome to CSOPESY!\n\n";
     init_marquee();
 
