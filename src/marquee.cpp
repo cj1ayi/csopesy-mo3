@@ -49,14 +49,14 @@ std::string current_frame(const std::string &ring, std::size_t width) {
 }
 
 /**
- * Reserves the current console line for the marquee.
+ * Reserves the current console line for the marquee, followed by a blank line.
  */
-void reserve_marquee_line() {
+void init_marquee() {
     std::cout.flush();
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     marquee_row = csbi.dwCursorPosition.Y;
-    std::cout << '\n';
+    std::cout << "\n\n";
 }
 
 /**

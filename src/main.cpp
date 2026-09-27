@@ -20,8 +20,7 @@ int main() {
 
     std::system("cls");
     std::cout << "Welcome to CSOPESY!\n\n";
-    reserve_marquee_line();
-    std::cout << '\n';
+    init_marquee();
 
     // group members
     std::cout << "Group Developer:\n";
