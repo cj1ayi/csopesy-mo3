@@ -87,14 +87,15 @@ static void run_marquee() {
         // writes at pos without moving the cursor
         std::string frame = current_frame(ring, width);
         DWORD written;
-        WriteConsoleOutputCharacterA(out, frame.data(), frame.size(), pos, &written);
+        WriteConsoleOutputCharacterA(out, frame.data(), static_cast<DWORD>(frame.size()), pos,
+                                     &written);
 
         ring = rotate_left(ring);
         std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(speed_ms));
     }
 
     DWORD written;
-    FillConsoleOutputCharacterA(out, ' ', last_width, pos, &written);
+    FillConsoleOutputCharacterA(out, ' ', static_cast<DWORD>(last_width), pos, &written);
 }
 
 /**
@@ -157,7 +158,8 @@ bool set_speed(const std::string &args) {
         speed_ms = ms;
         std::cout << "Animation speed set: " << ms << "ms\n\n";
     } else {
-        std::cout << "Invalid argument for 'set_speed.' Usage: set_speed <ms> (Example: set_speed 10)\n\n";
+        std::cout << "Invalid argument for 'set_speed.' Usage: set_speed <ms> (Example: set_speed "
+                     "10)\n\n";
     }
     return true;
 }
