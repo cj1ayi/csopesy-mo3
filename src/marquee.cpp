@@ -8,10 +8,12 @@
 #include <mutex>
 #include <thread>
 
+#include "helpers.h"
+
 static SHORT marquee_row = 0;
 static std::thread worker;
 static std::atomic<bool> running{false};
-static std::atomic<int> speed_ms{100};
+static std::atomic<double> speed_ms{100};
 static std::mutex text_mutex;
 static std::string marquee_text;
 
@@ -49,14 +51,14 @@ std::string current_frame(const std::string &ring, std::size_t width) {
 }
 
 /**
- * Reserves the current console line for the marquee.
+ * Reserves the current console line for the marquee, followed by a blank line.
  */
-void reserve_marquee_line() {
+void init_marquee() {
     std::cout.flush();
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     marquee_row = csbi.dwCursorPosition.Y;
-    std::cout << '\n';
+    std::cout << "\n\n";
 }
 
 /**
@@ -85,45 +87,79 @@ static void run_marquee() {
         // writes at pos without moving the cursor
         std::string frame = current_frame(ring, width);
         DWORD written;
-        WriteConsoleOutputCharacterA(out, frame.data(), frame.size(), pos, &written);
+        WriteConsoleOutputCharacterA(out, frame.data(), static_cast<DWORD>(frame.size()), pos,
+                                     &written);
 
         ring = rotate_left(ring);
-        std::this_thread::sleep_for(std::chrono::milliseconds(speed_ms));
+        std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(speed_ms));
     }
 
     DWORD written;
-    FillConsoleOutputCharacterA(out, ' ', last_width, pos, &written);
+    FillConsoleOutputCharacterA(out, ' ', static_cast<DWORD>(last_width), pos, &written);
 }
 
 /**
- * Starts the marquee thread. Returns false if already running.
+ * Stops the marquee thread if it is running.
  */
-bool start_marquee() {
-    if (running) {
-        return false;
-    }
-    running = true;
-    worker = std::thread(run_marquee);
-    return true;
-}
-
-/**
- * Stops the marquee thread. Returns false if it was not running.
- */
-bool stop_marquee() {
+void shutdown_marquee() {
     if (!running) {
-        return false;
+        return;
     }
     running = false;
     worker.join();
+}
+
+/**
+ * Starts the marquee thread.
+ */
+bool start_marquee(const std::string &) {
+    if (running) {
+        std::cout << "Marquee is already running.\n";
+        return true;
+    }
+    running = true;
+    worker = std::thread(run_marquee);
+    std::cout << "Marquee started.\n";
     return true;
 }
 
-void set_marquee_text(const std::string &text) {
-    std::lock_guard<std::mutex> lock(text_mutex);
-    marquee_text = text;
+/**
+ * Stops the marquee thread.
+ */
+bool stop_marquee(const std::string &) {
+    if (!running) {
+        std::cout << "Marquee is not running.\n";
+        return true;
+    }
+    shutdown_marquee();
+    std::cout << "Marquee stopped.\n";
+    return true;
 }
 
-void set_marquee_speed(int ms) {
-    speed_ms = ms;
+/**
+ * Sets the marquee text to args.
+ */
+bool set_text(const std::string &args) {
+    {
+        std::lock_guard<std::mutex> lock(text_mutex);
+        marquee_text = args;
+    }
+    std::cout << "Text saved for marquee: " << args << "\n";
+    return true;
+}
+
+/**
+ * Sets the marquee refresh delay in milliseconds.
+ */
+bool set_speed(const std::string &args) {
+    std::string value = args;
+    double ms;
+    if (parse_to_double(value, ms) && ms >= 1) {
+        speed_ms = ms;
+        std::cout << "Animation speed set: " << ms << "ms\n\n";
+    } else {
+        std::cout << "Invalid argument for 'set_speed.' Usage: set_speed <ms> (Example: set_speed "
+                     "10)\n\n";
+    }
+    return true;
 }

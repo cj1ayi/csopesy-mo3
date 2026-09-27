@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-void print_help();
 std::string to_lower(std::string);
 std::vector<std::string> parse_command(std::string &);
 bool parse_to_double(std::string &, double &);
