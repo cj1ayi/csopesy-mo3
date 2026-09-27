@@ -31,7 +31,8 @@ int main() {
     while (true) {
         std::cout << "Command>";
         if (!getline(std::cin, input)) {
-            std::cout << "\nEOF reached or input stream failed. Terminating console..." << std::endl;
+            std::cout << "\nEOF reached or input stream failed. Terminating console..."
+                      << std::endl;
             break;
         }
 
