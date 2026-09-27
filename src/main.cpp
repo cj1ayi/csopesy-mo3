@@ -33,7 +33,7 @@ int main() {
                       "set marquee text (Example: set_text Hello World!)", true, set_text});
     register_command({"set_speed", "set_speed <ms>",
                       "set refresh speed in ms (Example: set_speed 10)", true, set_speed});
-    register_command({"exit", "exit", "quit the program", true, exit_program});
+    register_command({"exit", "exit", "quit the program", false, exit_program});
 
     std::system("cls");
     std::cout << "Welcome to CSOPESY!\n\n";
