@@ -12,3 +12,6 @@ add_executable(csopesy_mo3
     src/marquee.cpp
     src/commands.cpp
 )
+
+find_package(Threads REQUIRED)
+target_link_libraries(csopesy_mo3 PRIVATE Threads::Threads)
