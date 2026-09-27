@@ -13,7 +13,7 @@
 static SHORT marquee_row = 0;
 static std::thread worker;
 static std::atomic<bool> running{false};
-static std::atomic<int> speed_ms{100};
+static std::atomic<double> speed_ms{100};
 static std::mutex text_mutex;
 static std::string marquee_text;
 
@@ -90,7 +90,7 @@ static void run_marquee() {
         WriteConsoleOutputCharacterA(out, frame.data(), frame.size(), pos, &written);
 
         ring = rotate_left(ring);
-        std::this_thread::sleep_for(std::chrono::milliseconds(speed_ms));
+        std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(speed_ms));
     }
 
     DWORD written;
@@ -154,7 +154,7 @@ bool set_speed(const std::string &args) {
     std::string value = args;
     double ms;
     if (parse_to_double(value, ms) && ms >= 1) {
-        speed_ms = static_cast<int>(ms);
+        speed_ms = ms;
         std::cout << "Animation speed set: " << ms << "ms\n\n";
     } else {
         std::cout << "Invalid argument for 'set_speed.' Usage: set_speed <ms> (Example: set_speed 10)\n\n";
