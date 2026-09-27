@@ -8,6 +8,8 @@
 #include <mutex>
 #include <thread>
 
+#include "helpers.h"
+
 static SHORT marquee_row = 0;
 static std::thread worker;
 static std::atomic<bool> running{false};
@@ -96,34 +98,66 @@ static void run_marquee() {
 }
 
 /**
- * Starts the marquee thread. Returns false if already running.
+ * Stops the marquee thread if it is running.
  */
-bool start_marquee() {
+void shutdown_marquee() {
+    if (!running) {
+        return;
+    }
+    running = false;
+    worker.join();
+}
+
+/**
+ * Starts the marquee thread.
+ */
+bool start_marquee(const std::string &) {
     if (running) {
-        return false;
+        std::cout << "Marquee is already running.\n";
+        return true;
     }
     running = true;
     worker = std::thread(run_marquee);
+    std::cout << "Marquee started.\n";
     return true;
 }
 
 /**
- * Stops the marquee thread. Returns false if it was not running.
+ * Stops the marquee thread.
  */
-bool stop_marquee() {
+bool stop_marquee(const std::string &) {
     if (!running) {
-        return false;
+        std::cout << "Marquee is not running.\n";
+        return true;
     }
-    running = false;
-    worker.join();
+    shutdown_marquee();
+    std::cout << "Marquee stopped.\n";
     return true;
 }
 
-void set_marquee_text(const std::string &text) {
-    std::lock_guard<std::mutex> lock(text_mutex);
-    marquee_text = text;
+/**
+ * Sets the marquee text to args.
+ */
+bool set_text(const std::string &args) {
+    {
+        std::lock_guard<std::mutex> lock(text_mutex);
+        marquee_text = args;
+    }
+    std::cout << "Text saved for marquee: " << args << "\n";
+    return true;
 }
 
-void set_marquee_speed(int ms) {
-    speed_ms = ms;
+/**
+ * Sets the marquee refresh delay in milliseconds.
+ */
+bool set_speed(const std::string &args) {
+    std::string value = args;
+    double ms;
+    if (parse_to_double(value, ms) && ms >= 1) {
+        speed_ms = static_cast<int>(ms);
+        std::cout << "Animation speed set: " << ms << "ms\n\n";
+    } else {
+        std::cout << "Invalid argument for 'set_speed.' Usage: set_speed <ms> (Example: set_speed 10)\n\n";
+    }
+    return true;
 }

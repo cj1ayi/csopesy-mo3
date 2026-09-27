@@ -15,8 +15,6 @@ int main() {
     };
 
     std::string input;
-    std::string marquee_text;
-    double animation_speed = 10; // default 10ms
 
     std::system("cls");
     std::cout << "Welcome to CSOPESY!\n\n";
@@ -38,12 +36,12 @@ int main() {
         if (!getline(std::cin, input)) {
             std::cout << "\nEOF reached or input stream failed. Terminating console..."
                       << std::endl;
-            stop_marquee();
             break;
         }
 
         std::vector<std::string> extracted_input = parse_command(input);
         std::string command = to_lower(extracted_input[0]);
+        std::string args = extracted_input.size() > 1 ? extracted_input[1] : "";
 
         // argument count error checking
         if (command == "help" || command == "start_marquee" || command == "stop_marquee") {
@@ -56,35 +54,14 @@ int main() {
         if (command == "help") {
             print_help();
         } else if (command == "start_marquee") {
-            if (start_marquee()) {
-                std::cout << "Marquee started.\n";
-            } else {
-                std::cout << "Marquee is already running.\n";
-            }
+            start_marquee(args);
         } else if (command == "stop_marquee") {
-            if (stop_marquee()) {
-                std::cout << "Marquee stopped.\n";
-            } else {
-                std::cout << "Marquee is not running.\n";
-            }
+            stop_marquee(args);
         } else if (command == "set_text") {
-            if (extracted_input.size() < 2) {
-                marquee_text = "";
-            } else {
-                marquee_text = extracted_input[1];
-            }
-            set_marquee_text(marquee_text);
-            std::cout << "Text saved for marquee: " << marquee_text << "\n";
+            set_text(args);
         } else if (command == "set_speed") {
-            if (extracted_input.size() > 1 && parse_to_double(extracted_input[1], animation_speed) &&
-                animation_speed >= 1) {
-                set_marquee_speed(static_cast<int>(animation_speed));
-                std::cout << "Animation speed set: " << animation_speed << "ms\n\n";
-            } else {
-                std::cout << "Invalid argument for 'set_speed.' Usage: set_speed <ms> (Example: set_speed 10)\n\n";
-            }
+            set_speed(args);
         } else if (command == "exit") {
-            stop_marquee();
             std::cout << "Terminating console..." << std::endl;
             break;
         } else {
@@ -92,5 +69,6 @@ int main() {
         }
     }
 
+    shutdown_marquee();
     return 0;
 }
