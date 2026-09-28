@@ -15,3 +15,9 @@ add_executable(csopesy_mo3
 
 find_package(Threads REQUIRED)
 target_link_libraries(csopesy_mo3 PRIVATE Threads::Threads)
+
+if(MSVC)
+    target_compile_options(csopesy_mo3 PRIVATE /W4 /WX)
+else()
+    target_compile_options(csopesy_mo3 PRIVATE -Wall -Wextra -Werror)
+endif()

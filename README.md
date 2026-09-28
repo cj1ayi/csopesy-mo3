@@ -14,11 +14,11 @@
 | macOS / Linux      | g++   | ✅        |
 
 ### Windows
-1. Compile: `g++ src/*.cpp -o csopesy_mo3.exe -I include`
+1. Compile: `g++ -std=c++20 -Wall -Wextra -Werror src/*.cpp -o csopesy_mo3.exe -I include`
 2. Run: `.\csopesy_mo3.exe`
 
 ### macOS / Linux
-1. Compile: `g++ -std=c++20 -pthread src/*.cpp -o csopesy_mo3 -I include`
+1. Compile: `g++ -std=c++20 -Wall -Wextra -Werror -pthread src/*.cpp -o csopesy_mo3 -I include`
 2. Run: `./csopesy_mo3`
 
 ### Alternative (CMake)
