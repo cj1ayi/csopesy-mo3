@@ -284,12 +284,12 @@ void shutdown_marquee() {
  */
 bool start_marquee(const std::string &) {
     if (running) {
-        std::cout << "Marquee is already running.\n";
+        std::cout << "Marquee is already running.\n\n";
         return true;
     }
     running = true;
     worker = std::thread(run_marquee);
-    std::cout << "Marquee started.\n";
+    std::cout << "Marquee started.\n\n";
     return true;
 }
 
@@ -298,11 +298,11 @@ bool start_marquee(const std::string &) {
  */
 bool stop_marquee(const std::string &) {
     if (!running) {
-        std::cout << "Marquee is not running.\n";
+        std::cout << "Marquee is not running.\n\n";
         return true;
     }
     stop_worker();
-    std::cout << "Marquee stopped.\n";
+    std::cout << "Marquee stopped.\n\n";
     return true;
 }
 
@@ -314,7 +314,7 @@ bool set_text(const std::string &args) {
         std::lock_guard<std::mutex> lock(text_mutex);
         marquee_text = args;
     }
-    std::cout << "Text saved for marquee: " << args << "\n";
+    std::cout << "Text saved for marquee: " << args << "\n\n";
     return true;
 }
 
