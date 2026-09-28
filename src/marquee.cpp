@@ -20,6 +20,7 @@
 
 static std::thread worker;
 static std::atomic<bool> running{false};
+static std::atomic<bool> alive{false};
 static std::atomic<double> speed_ms{100};
 static std::mutex text_mutex;
 static std::string marquee_text;
@@ -239,7 +240,11 @@ static void run_marquee() {
     std::string ring, last_text;
     std::size_t last_width = 0;
 
-    while (running) {
+    while (alive) {
+        if (!running) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            continue;
+        }
         std::size_t width = console_width();
 
         {
@@ -264,10 +269,13 @@ static void run_marquee() {
  * Stops the marquee thread if it is running.
  */
 static void stop_worker() {
-    if (!running) {
+    if (!worker.joinable()) {
         return;
     }
+
     running = false;
+    alive = false;
+
     worker.join();
 }
 
@@ -287,8 +295,13 @@ bool start_marquee(const std::string &) {
         std::cout << "Marquee is already running.\n\n";
         return true;
     }
+
     running = true;
-    worker = std::thread(run_marquee);
+    alive = true;
+
+    if (!worker.joinable()) {
+        worker = std::thread(run_marquee);
+    }
     std::cout << "Marquee started.\n\n";
     return true;
 }
@@ -301,7 +314,7 @@ bool stop_marquee(const std::string &) {
         std::cout << "Marquee is not running.\n\n";
         return true;
     }
-    stop_worker();
+    running = false;
     std::cout << "Marquee stopped.\n\n";
     return true;
 }
